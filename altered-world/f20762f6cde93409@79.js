@@ -1,38 +1,25 @@
-// https://observablehq.com/@mbostock/altered-world@79
-function* _canvas(Noise, DOM, width, height, period, length) {
-  const perlin  = new Noise(3);
+
+function* _canvas(Noise,DOM,width,height,period,length)
+{
+  const perlin = new Noise(3);
   const context = DOM.context2d(width, height);
-
-  /* 3 · use site gradient instead of hard black */
-  context.canvas.style.background = "transparent";
-
-  context.lineWidth   = 0.5;
-  context.globalAlpha = 0.20;             // 2 · only 20 % opaque
-
-  /* 1 · sweep top‑to‑bottom instead of left‑to‑right */
-  for (let py = 0; py < height; ++py) {   // row iterator
-
-    /* draw a few strands per row */
-    for (let i = 0; i < width / 6; ++i) {
-      let x = Math.random() * width;
-      let y = py;
-
-      /* per‑row noise & color */
+  context.canvas.style.background = "#000";
+  context.lineWidth = 0.5;
+  context.globalAlpha = 0.05;
+  for (let px = 0; px < width; ++px) {
+    for (let i = 0; i < height / 6; ++i) {
+      let x = px;
+      let y = Math.random() * height;
       let n = perlin.noise(x * period, y * period);
-      context.strokeStyle = `hsl(${-210 + n * 600}, 100%, ${800 * n ** 3}%)`;
-
+      context.strokeStyle = `hsl(${-210 + n * 600}, 100%, ${800 * n * n * n}%)`;
       context.beginPath();
       context.moveTo(x, y);
-
-      /* wander until off‑screen or “length” steps */
-      for (let m = 0; m < length && x >= 0 && x <= width; ++m) {
+      for (let m = 0; m < length && y >= 0 && y <= height; ++m) {
         n = perlin.noise(x * period, y * period);
         context.lineTo(x += Math.cos(n * 14), y += Math.sin(n * 14));
       }
       context.stroke();
     }
-
-    /* hand the frame back to Observable / runtime */
     yield context.canvas;
   }
 }
