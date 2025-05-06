@@ -1,10 +1,4 @@
 // https://observablehq.com/@mbostock/altered-world@79
-function _1(md){return(
-md`# Altered World
-
-An adaptation of Gerard Ferrandez’s remarkable [*this alter world*](https://codepen.io/ge1doot/details/GQobbq/). Noise based on Ken Perlin’s [improved reference implementation](http://mrl.nyu.edu/~perlin/noise/).`
-)}
-
 function* _canvas(Noise,DOM,width,height,period,length)
 {
   const perlin = new Noise(3);
