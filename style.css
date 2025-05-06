@@ -1,0 +1,43 @@
+/* ===== color palettes ===== */
+body.dawn {
+    --bg1:#ffecd2;  /* warm top */
+    --bg2:#fcb69f;  /* warm bottom */
+    --text:#222;
+  }
+  body.twilight {
+    --bg1:#040308;  /* deep night top */
+    --bg2:#171e30;  /* deep night bottom */
+    --text:#f5f7ff;
+  }
+  
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;font-family:system-ui, sans-serif;}
+  body{
+    background:linear-gradient(var(--bg1),var(--bg2));
+    color:var(--text);transition:background 0.6s ease,color 0.6s ease;
+  }
+  
+  /* full‑screen generative art behind everything */
+  #altered-bg{
+    position:fixed;inset:0;z-index:-1;pointer-events:none;
+  }
+  
+  /* nav */
+  nav{
+    display:flex;gap:1rem;align-items:center;
+    padding:1rem 2rem;font-weight:600;text-transform:uppercase;
+  }
+  nav a{color:var(--text);text-decoration:none;letter-spacing:.05em}
+  nav a:hover{opacity:.7}
+  
+  /* sun / moon toggle */
+  #theme-toggle{
+    margin-left:auto;border:none;background:none;
+    font-size:1.3rem;cursor:pointer;color:var(--text);
+  }
+  
+  /* layout */
+  main{max-width:800px;margin:6rem auto 4rem;padding:0 2rem}
+  h1{font-size:2.5rem;margin-bottom:1rem}
+  ul{list-style:disc;padding-left:1.25rem}
+  
