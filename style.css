@@ -16,5 +16,31 @@ main{max-width:800px;margin:auto;padding:4rem 2rem}h1{margin-top:0;font-size:2.5
 
 .avatar{width:150px;border-radius:50%;display:block;margin-bottom:2rem}
 
-.dna{font-size:.9rem;text-align:center;opacity:.6;animation:hue 12s linear infinite alternate;padding-bottom:2rem;white-space:pre}
-@keyframes hue{0%{filter:hue-rotate(0)}100%{filter:hue-rotate(360deg)}}
+/* sun / moon always match nav text */
+#theme-toggle{
+  margin-left:auto;
+  border:none;
+  background:none;
+  font-size:1.2rem;
+  color:var(--nav-link);   /* picks up white or black */
+  cursor:pointer;
+  font-family:"Fira Code",monospace; /* forces glyph to render monochrome */
+}
+
+/* animated pastel dna */
+.dna{
+  font-size:.9rem;
+  text-align:center;
+  opacity:.7;
+  color:hsl(210 80% 65%);      /* start with some saturation */
+  white-space:pre;
+  animation:hue 10s linear infinite,
+           wiggle 5s ease-in-out infinite alternate;
+}
+@keyframes hue{
+  to{filter:hue-rotate(360deg);}   /* cycles through pastel wheel */
+}
+@keyframes wiggle{
+  0%{transform:translateX(-8px)}
+  100%{transform:translateX(8px)}
+}
