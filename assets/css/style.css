@@ -20,7 +20,6 @@ body{
 
 nav{
     backdrop-filter:blur(6px);
-    background:var(--paper);
     padding:.75rem 1rem;
     display:flex;
     gap:1rem;
@@ -45,6 +44,16 @@ main{
     padding:2rem 3rem;
     border-radius:8px;
     box-shadow:0 4px 12px rgba(0,0,0,.4);
+}
+
+/* split-nav layout */
+nav{
+    justify-content:space-between;   /* push edges apart */
+}
+
+.nav-right{
+    display:flex;
+    gap:1rem;                        /* keep same spacing */
 }
 
 /* small screens still matter */
