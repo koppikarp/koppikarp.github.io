@@ -61,12 +61,14 @@ main {
 }
 
 .profile-img {
-    max-width: 200px;
+    width: 100%;             /* scales with container */
+    max-width: 100%;         /* never overflows main */
     height: auto;
-    border-radius: 8px; /* soften the corners */
+    border-radius: 8px;
     display: block;
-    margin-top: 20px;
+    margin-top: 1.5rem;
   }
+  
 
 @media (max-width: 600px) {
     main {
