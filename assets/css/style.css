@@ -1,0 +1,53 @@
+/* one stylesheet, zero drama */
+:root{
+    --ink:#f5f5f5;
+    --paper:rgba(0,0,0,.75);
+    --accent:#ff9068;
+    font-family: system-ui, sans-serif;
+}
+
+html,body{
+    height:100%;
+    margin:0;
+}
+
+body{
+    color:var(--ink);
+    background:url('../images/background.png') center/cover fixed no-repeat;
+    display:flex;
+    flex-direction:column;
+}
+
+nav{
+    backdrop-filter:blur(6px);
+    background:var(--paper);
+    padding:.75rem 1rem;
+    display:flex;
+    gap:1rem;
+    position:sticky;
+    top:0;
+}
+
+nav a{
+    color:var(--ink);
+    text-decoration:none;
+    font-weight:600;
+    transition:opacity .2s;
+}
+
+nav a:hover{opacity:.7}
+
+main{
+    flex:1;
+    max-width:60ch;
+    margin:4rem auto;
+    background:rgba(0,0,0,.5);
+    padding:2rem 3rem;
+    border-radius:8px;
+    box-shadow:0 4px 12px rgba(0,0,0,.4);
+}
+
+/* small screens still matter */
+@media (max-width:600px){
+    main{margin:2rem 1rem;padding:1.5rem}
+}
