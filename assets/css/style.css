@@ -70,7 +70,7 @@ main {
     width: 28px;
     height: 28px;
     object-fit: contain;
-    filter: brightness(0) invert(1); /* optional: makes them white-ish if they're dark */
+    filter: brightness(10) invert(1); /* optional: makes them white-ish if they're dark */
   }
   
   .social-icons a:hover img {
