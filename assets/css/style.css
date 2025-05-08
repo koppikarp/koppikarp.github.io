@@ -60,6 +60,11 @@ main {
     box-shadow: 0 4px 12px rgba(0, 0, 0, .4);
 }
 
+.img-wrapper {
+    max-width: 300px;
+    margin: 2rem auto 0;
+  }
+  
 .profile-img {
     width: 100%;             /* scales with container */
     max-width: 100%;         /* never overflows main */
