@@ -22,7 +22,7 @@ body {
 nav {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     width: 100%;
     backdrop-filter: blur(6px);
     background: var(--paper);
