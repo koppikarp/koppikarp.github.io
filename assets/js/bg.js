@@ -12,10 +12,12 @@
 
     const ctx = canvas.getContext('2d');
     let width, height;
+    let isMobile = window.innerWidth < 768;
 
     function resize() {
         width = window.innerWidth;
         height = window.innerHeight;
+        isMobile = width < 768;
         canvas.width = width * window.devicePixelRatio;
         canvas.height = height * window.devicePixelRatio;
         ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
@@ -24,7 +26,7 @@
     resize();
 
     const N_TYPES = 20; // 20 border colors
-    const NUM_CELLS = window.innerWidth < 768 ? 60 : 150;
+    const NUM_CELLS = isMobile ? 50 : 150; // Slightly fewer cells so it's not overcrowded
 
     // Matrix for particle life
     const matrix = [];
@@ -79,7 +81,7 @@
             this.vy = 0;
             this.type = type;
             this.organelleType = Math.floor(Math.random() * 50); // 50 shapes!
-            this.radius = 12 + Math.random() * 14;
+            this.radius = (isMobile ? 8 : 12) + Math.random() * (isMobile ? 10 : 14);
             this.timeOffset = Math.random() * 1000;
 
             this.nucleus = {
@@ -139,10 +141,10 @@
 
             // Box collision (safe zone around text)
             for (let box of safeBoxes) {
-                let strictLeft = box.left + 30;
-                let strictRight = box.right - 30;
-                let strictTop = box.top + 20;
-                let strictBottom = box.bottom - 20;
+                let strictLeft = box.left + box.padX;
+                let strictRight = box.right - box.padX;
+                let strictTop = box.top + box.padY;
+                let strictBottom = box.bottom - box.padY;
 
                 if (this.x > strictLeft && this.x < strictRight && this.y > strictTop && this.y < strictBottom) {
                     this.explode();
@@ -177,7 +179,7 @@
             }
 
             // Upward drift (buoyancy)
-            fy -= 0.05 + Math.random() * 0.03;
+            fy -= (isMobile ? 0.08 : 0.05) + Math.random() * 0.03;
 
             this.vx = (this.vx + fx) * 0.85;
             this.vy = (this.vy + fy) * 0.85;
@@ -331,7 +333,7 @@
     for (let i = 0; i < NUM_CELLS + 20; i++) {
         cells.push(new Cell(
             Math.random() * width,
-            height + Math.random() * (height * 2), // Start entirely offscreen at the bottom spread widely
+            height + Math.random() * (isMobile ? height * 0.5 : height * 2), // Start closer on mobile
             Math.floor(Math.random() * N_TYPES)
         ));
     }
@@ -343,14 +345,18 @@
         // Fetch safe bounds of text dynamically to handle scrolling
         const safeBoxes = [];
         const landings = document.querySelectorAll('.landing');
+        const padX = isMobile ? 10 : 30;
+        const padY = isMobile ? 10 : 20;
+
         landings.forEach(el => {
             let rect = el.getBoundingClientRect();
             // Create a slightly expanded box to push cells away before they overlap text
             safeBoxes.push({
-                left: rect.left - 30,
-                right: rect.right + 30,
-                top: rect.top - 20,
-                bottom: rect.bottom + 20
+                padX: padX, padY: padY,
+                left: rect.left - padX,
+                right: rect.right + padX,
+                top: rect.top - padY,
+                bottom: rect.bottom + padY
             });
         });
 
