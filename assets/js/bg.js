@@ -25,6 +25,22 @@
     window.addEventListener('resize', resize);
     resize();
 
+
+    let mouse = { x: -1000, y: -1000 };
+    window.addEventListener('mousemove', e => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+    });
+    window.addEventListener('click', e => {
+        for (let i = 0; i < cells.length; i++) {
+            let dx = cells[i].x - e.clientX;
+            let dy = cells[i].y - e.clientY;
+            if (Math.sqrt(dx * dx + dy * dy) < cells[i].radius * 1.5) {
+                cells[i].explode();
+            }
+        }
+    });
+
     const N_TYPES = 20; // 20 border colors
     const NUM_CELLS = isMobile ? 50 : 150; // Slightly fewer cells so it's not overcrowded
 
@@ -108,7 +124,7 @@
             this.organelleType = Math.floor(Math.random() * 50);
         }
 
-        update(safeBoxes) {
+        update(safeBoxes, time) {
             let fx = 0;
             let fy = 0;
             const maxR = 80;
@@ -178,8 +194,26 @@
                 }
             }
 
-            // Upward drift (buoyancy)
-            fy -= (isMobile ? 0.08 : 0.05) + Math.random() * 0.03;
+            // Mouse repulsion
+            let mdx = this.x - mouse.x;
+            let mdy = this.y - mouse.y;
+            let md = Math.sqrt(mdx * mdx + mdy * mdy);
+            if (md < 150) {
+                let mForce = (150 - md) / 150 * 1.2;
+                if (md > 0) {
+                    fx += (mdx / md) * mForce;
+                    fy += (mdy / md) * mForce;
+                }
+            }
+
+            // Upward drift (swimming contraction)
+            let swimPhase = (time * 0.003 + this.timeOffset);
+            let thrust = Math.sin(swimPhase);
+            if (thrust > 0) {
+                fy -= (isMobile ? 0.08 : 0.04) * (1 + thrust * 2.5);
+            } else {
+                fy -= (isMobile ? 0.03 : 0.01);
+            }
 
             this.vx = (this.vx + fx) * 0.85;
             this.vy = (this.vy + fy) * 0.85;
@@ -207,7 +241,13 @@
         draw(ctx, time) {
             ctx.save();
             ctx.translate(this.x, this.y);
-            ctx.rotate(Math.sin(time * 0.0005 + this.timeOffset) * 0.5);
+            
+            let swimPhase = (time * 0.003 + this.timeOffset);
+            let stretch = 1.0 + Math.sin(swimPhase) * 0.15;
+            let squash = 1.0 / stretch; // preserve volume roughly
+            ctx.scale(squash, stretch);
+            
+            ctx.rotate(Math.sin(time * 0.0005 + this.timeOffset) * 0.3);
 
             const pts = [];
             for(let i = 0; i < 10; i++) {
@@ -361,7 +401,7 @@
         });
 
         for (let i = 0; i < cells.length; i++) {
-            cells[i].update(safeBoxes);
+            cells[i].update(safeBoxes, time);
         }
         for (let i = 0; i < splats.length; i++) {
             splats[i].draw(ctx);
