@@ -198,8 +198,8 @@
             let mdx = this.x - mouse.x;
             let mdy = this.y - mouse.y;
             let md = Math.sqrt(mdx * mdx + mdy * mdy);
-            if (md < 150) {
-                let mForce = (150 - md) / 150 * 1.2;
+            if (md < 100) {
+                let mForce = (100 - md) / 100 * 0.15; // Barely noticeable nudge
                 if (md > 0) {
                     fx += (mdx / md) * mForce;
                     fy += (mdy / md) * mForce;
